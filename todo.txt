@@ -1,0 +1,11 @@
+1) work on basic pytorch tokenization and find suitable dataset with english and spanish phrases in order to train a machine translated neural network
+
+2) Work on basic TypeScript webpage to illustrate how it works, with having a text box for the use to enter a phrase, and an output box.
+
+3) below this box is a view into the console, giving metric data, as well as what its currently doing.
+
+example diagram:
+
+inpBox    ->     outBox
+
+     console jargon

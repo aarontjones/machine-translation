@@ -1,0 +1,13 @@
+Simple workflow for what I need to implement
+
+Import 50k-100k large dataset between english and Spanish words
+
+Using pytorch, 
+
+tokenize with SentencePiece or a Huggin Face tokenizer
+
+Use pytorch manually - mult-head attention, positional encoding, masking
+
+loss + evaluation
+loss: crossentropyloss
+Metric: BLEU score
