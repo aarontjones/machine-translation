@@ -3,59 +3,123 @@
     padding: 0;
     box-sizing: border-box;
     font-size: 16px;
+    color: black;
 }
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: rgb(87, 87, 87);
+    background-color: rgb(128, 128, 128);
     color: white;
 
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    position: relative;
+}
+
+/* particles */
+#particles-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    z-index: 0;
+    pointer-events: none;
 }
 
 /* Main container */
 .container {
-    width: 600px;
-    padding: 20px;
-    border: 2px solid white;
+    width: 100%;
+    max-width: 1400px;
+    padding: 30px;
+    border: 1px solid black;
     border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 1;
+    position: relative;
+    margin: 50px auto;
 }
 
-/* Top row layout */
-.top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+/* Title */
+.title {
+    text-align: center;
     margin-bottom: 20px;
+    font-size: 20px;
+    letter-spacing: 4px;
+}
+
+.console-title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 18px;
+    letter-spacing: 6px;
 }
 
 /* Input */
 .input-box {
-    width: 150px;
+    color: black;
+    width: 100%;
     padding: 8px;
+    border-radius: 8px;
+    border: 1px solid rgb(128, 128, 128);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15)
 }
 
-/* Button */
-.btn {
+/* Buttons */
+.translate-button {
+    display: block;
     padding: 8px 16px;
+    width: 25%;
     cursor: pointer;
+    margin: 10px auto 10px auto;
+    border: 1px solid rgb(128, 128, 128);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15)
+}
+
+.clear-button {
+    display: block;
+    padding: 8px 16px;
+    margin: 10px auto 0 auto;
+    cursor: pointer;
+    border: 1px solid rgb(128, 128, 128);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15)
 }
 
 /* Output */
 .output-box {
-    width: 150px;
+    width: 100%;
     padding: 8px;
-    border: 1px solid white;
+    border: 1px solid rgb(128, 128, 128);
+    border-radius: 8px;
     text-align: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15)
 }
 
 /* Console area */
-.console {
+.console-box {
     height: 120px;
-    border: 1px solid white;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+    border: 1px solid rgb(128, 128, 128);
     padding: 10px;
     overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15)
+}
+
+/* For fading logs */
+.console-box div {
+    transition: opacity 0.25s ease;
+}
+
+.fade-out {
+    opacity: 0;
 }
