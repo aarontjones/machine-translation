@@ -1,13 +1,8 @@
-Simple workflow for what I need to implement
+New:
 
-Import 50k-100k large dataset between english and Spanish words
+Typescript front-end with api call to python script
 
-Using pytorch, 
+Typescript webpage hosted on Github Pages - as normal
+Python script hosted on Render
 
-tokenize with SentencePiece or a Huggin Face tokenizer
-
-Use pytorch manually - mult-head attention, positional encoding, masking
-
-loss + evaluation
-loss: crossentropyloss
-Metric: BLEU score
+Pre-trained Hugging Face Transformer

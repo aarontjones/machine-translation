@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "typescript": "^6.0.2"
+  },
+  "name": "machinetranslation",
+  "description": "Updated version of my dissertation project",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aarontjones/machine-translation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aarontjones/machine-translation/issues"
+  },
+  "homepage": "https://github.com/aarontjones/machine-translation#readme"
+}

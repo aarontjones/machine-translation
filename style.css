@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: rgb(87, 87, 87);
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Main container */
+.container {
+    width: 600px;
+    padding: 20px;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+/* Top row layout */
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Input */
+.input-box {
+    width: 150px;
+    padding: 8px;
+}
+
+/* Button */
+.btn {
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+/* Output */
+.output-box {
+    width: 150px;
+    padding: 8px;
+    border: 1px solid white;
+    text-align: center;
+}
+
+/* Console area */
+.console {
+    height: 120px;
+    border: 1px solid white;
+    padding: 10px;
+    overflow-y: auto;
+}
