@@ -105,8 +105,10 @@ body {
 
 /* Console area */
 .console-box {
+    display: block;
     height: 120px;
     width: 100%;
+    margin: 10px auto 0 auto;
     max-width: 500px;
     border-radius: 8px;
     border: 1px solid rgb(128, 128, 128);
@@ -122,4 +124,26 @@ body {
 
 .fade-out {
     opacity: 0;
+}
+
+/* Separator */
+.separator {
+    border: none;
+    height: 2px;
+    background-color: rgb(128, 128, 128);
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+/* About / Information Screen */
+.about-title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 18px;
+    letter-spacing: 6px;
+}
+
+.about-continer {
+    max-width: 50%;
 }

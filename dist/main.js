@@ -66,6 +66,31 @@ consoleTitle.innerText = "Console";
 // Console Area
 const consoleBox = document.createElement("div");
 consoleBox.className = "console-box";
+// Console Separator
+const separator = document.createElement("hr");
+separator.className = "separator";
+// About Title
+const aboutTitle = document.createElement("h1");
+aboutTitle.className = "about-title";
+aboutTitle.innerText = "About This Project";
+// about container
+const aboutContainer = document.createElement("div");
+aboutContainer.className = "about-container";
+// About
+const about = document.createElement("p");
+about.className = "about-section";
+about.innerText = `
+This project is meant to express API usage, as well as proper documentation and error management.
+
+You can either manually type a message, or upload a .txt file.
+
+Depending on your choice, It will either be shown in the output box, or a downloadable txt file, with the translated message
+
+This project only translates into X, with no intentions of multiple languages.
+
+EXPLAIN HOW IT WORKS
+
+`;
 // Console Clear Button
 const clearButton = document.createElement("button");
 clearButton.className = "clear-button";
@@ -108,7 +133,7 @@ translateButton.addEventListener("click", () => {
     outputBox.textContent = value;
     logToConsole(`Translated Message: ${value}`);
 });
-// Assembling layout
+// Assembling layout of main loop
 container.appendChild(title);
 container.appendChild(inputBox);
 container.appendChild(translateButton);
@@ -116,6 +141,12 @@ container.appendChild(outputBox);
 container.appendChild(consoleTitle);
 container.appendChild(consoleBox);
 container.appendChild(clearButton);
+// Separator
+container.appendChild(separator);
+// Information screen
+container.appendChild(aboutTitle);
+aboutContainer.appendChild(about);
+container.appendChild(aboutContainer);
 app.appendChild(container);
 export {};
 //# sourceMappingURL=main.js.map
