@@ -1,8 +1,7 @@
-1) 
-Make basic typescript format with a box in the middle of screen
+1) Add a clear field button to input text, which clears the input field and sets the output field back to empty.
 
-2)
-Add input and output box, which when pressing a button puts the text in output box
+2) Use Websockets to get realtime translation information
 
-3)
-Jazz it up with CSS
+3) Allow txt files to be inputs and outputs, overriding if there is text in the input field, and only output regarding if its a txt file.
+
+4) Allow Differenet languages

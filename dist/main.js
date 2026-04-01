@@ -1,3 +1,12 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 const app = document.getElementById("app");
 if (!app)
     throw new Error("App Container Not Found");
@@ -58,7 +67,7 @@ translateButton.textContent = "Translate";
 // Output Box
 const outputBox = document.createElement("div");
 outputBox.className = "output-box";
-outputBox.textContent = "Empty";
+outputBox.textContent = "";
 // Console Title
 const consoleTitle = document.createElement("h2");
 consoleTitle.className = "console-title";
@@ -82,9 +91,7 @@ about.className = "about-section";
 about.innerText = `
 This project is meant to express API usage, as well as proper documentation and error management.
 
-You can either manually type a message, or upload a .txt file.
 
-Depending on your choice, It will either be shown in the output box, or a downloadable txt file, with the translated message
 
 This project only translates into X, with no intentions of multiple languages.
 
@@ -121,18 +128,37 @@ function updateLogNumbers() {
     }
 }
 // Button Press
-translateButton.addEventListener("click", () => {
+translateButton.addEventListener("click", () => __awaiter(void 0, void 0, void 0, function* () {
     const value = inputBox.value.trim();
     // Prevent empty input
     if (!value) {
-        logToConsole("Please enter text in the input box THIS IS A TEST TO MAKE SURE OVERSPILL WORKS");
-        outputBox.textContent = "Empty";
+        logToConsole("Please enter text in the input box.");
+        outputBox.textContent = "";
         return;
     }
     // Update Output Box
-    outputBox.textContent = value;
-    logToConsole(`Translated Message: ${value}`);
-});
+    try {
+        logToConsole("Running Translation Script");
+        const response = yield fetch("http://127.0.0.1:5000/translate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ text: value })
+        });
+        const data = yield response.json();
+        outputBox.textContent = data.translated;
+        // Log backend messages
+        if (data.logs) {
+            data.logs.forEach((log) => logToConsole(log));
+        }
+        logToConsole(`Translated Message: ${data.translated}`);
+    }
+    catch (error) {
+        logToConsole("Error Connecting to Python Backend");
+        console.error(error);
+    }
+}));
 // Assembling layout of main loop
 container.appendChild(title);
 container.appendChild(inputBox);

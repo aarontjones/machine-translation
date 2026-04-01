@@ -74,7 +74,7 @@ translateButton.textContent = "Translate"
 // Output Box
 const outputBox = document.createElement("div")
 outputBox.className = "output-box"
-outputBox.textContent = "Empty"
+outputBox.textContent = ""
 
 // Console Title
 const consoleTitle = document.createElement("h2")
@@ -104,9 +104,7 @@ about.className = "about-section"
 about.innerText = `
 This project is meant to express API usage, as well as proper documentation and error management.
 
-You can either manually type a message, or upload a .txt file.
 
-Depending on your choice, It will either be shown in the output box, or a downloadable txt file, with the translated message
 
 This project only translates into X, with no intentions of multiple languages.
 
@@ -149,20 +147,41 @@ function updateLogNumbers() {
 }
 
 // Button Press
-translateButton.addEventListener("click", () => {
+translateButton.addEventListener("click", async () => {
     const value = inputBox.value.trim()
 
     // Prevent empty input
     if (!value) {
-        logToConsole("Please enter text in the input box THIS IS A TEST TO MAKE SURE OVERSPILL WORKS")
-        outputBox.textContent = "Empty"
+        logToConsole("Please enter text in the input box.")
+        outputBox.textContent = ""
         return
     }
 
     // Update Output Box
-    outputBox.textContent = value
+    try {
+        logToConsole("Running Translation Script")
+        const response = await fetch("http://127.0.0.1:5000/translate", { // Temporary localhost to make sure connections work
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ text: value })
+        })
+        const data = await response.json()
 
-    logToConsole(`Translated Message: ${value}`)
+        outputBox.textContent = data.translated
+
+        // Log backend messages
+        if (data.logs) {
+            data.logs.forEach((log: string) => logToConsole(log))
+        }
+
+        logToConsole(`Translated Message: ${data.translated}`)
+
+    } catch (error) {
+        logToConsole("Error Connecting to Python Backend")
+        console.error(error)
+    }
 })
 
 // Assembling layout of main loop
