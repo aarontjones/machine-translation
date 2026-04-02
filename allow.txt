@@ -1,0 +1,5 @@
+This project is meant to explore development of creating API's and calling them, as well as machine translation, which I explored in my dissertation project for university.
+
+It is another TypeScript project, with a python script backend, using a Hugging Face Transformer to translate into spanish.
+
+You can visit it here: aarontjones.github.io/machine-translation.
