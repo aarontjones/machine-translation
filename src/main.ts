@@ -10,12 +10,24 @@ socket.on("log", (message: string) => {
 })
 
 // Receive Final Result
-socket.on("done", (data: any) => {
+let lastTranslatedText: string | null = null
+socket.on("done", (data: any) => { 
     if (data.translated) {
-        outputBox.textContent = data.translated
-        outputBox.classList.remove("hidden")
+        lastTranslatedText = data.translated
+
+        // Showing download icon because a translation is ready
+        fileDownloadIcon.style.display = "inline-block"
+
+        // Only show in output if normal input is used
+        if (!fileInputText) {
+            outputBox.textContent = data.translated
+            outputBox.classList.remove("hidden")
+        }
+
         logToConsole(`Translated message: ${data.translated}`)
     } else {
+        lastTranslatedText = null
+        fileDownloadIcon.style.display = "none" // Hide icon if nothing is downloadable
         outputBox.textContent = ""
         outputBox.classList.add("hidden")
     }
@@ -81,7 +93,7 @@ container.className = "container"
 // Title
 const title = document.createElement("h1")
 title.className = "title"
-title.innerText = "Machine Translation (LANGUAGE)"
+title.innerText = "Machine Translation (Spanish)"
 
 // Input Wrapper
 const inputWrapper= document.createElement("div")
@@ -97,7 +109,30 @@ const clearInput = document.createElement("button")
 clearInput.className = "clear-input"
 clearInput.textContent = "X"
 
-// Button
+// Left File Icon (Input)
+const fileInputIcon = document.createElement("img")
+fileInputIcon.src = "assets/images/file.png"
+fileInputIcon.className = "file-icon left-icon"
+fileInputIcon.title = "Select Input File"
+
+// Hidden File Input
+const hiddenFileInput = document.createElement("input")
+hiddenFileInput.type = "file"
+hiddenFileInput.accept = ".txt" // only allow txt file
+hiddenFileInput.style.display = "none"
+
+// Right File Icon (Download Translation)
+const fileDownloadIcon = document.createElement("img")
+fileDownloadIcon.src = "assets/images/file.png"
+fileDownloadIcon.className = "file-icon right-icon"
+fileDownloadIcon.title = "Download Translation"
+fileDownloadIcon.style.display = "none" // Hidden by default
+
+// Wrapper for button and 2 files
+const translateWrapper = document.createElement("div")
+translateWrapper.className = "translate-wrapper"
+
+// Translate Button
 const translateButton = document.createElement("button")
 translateButton.className = "translate-button"
 translateButton.textContent = "Translate"
@@ -136,13 +171,32 @@ aboutContainer.className = "about-container"
 const about = document.createElement("p")
 about.className = "about-section"
 about.innerText = `
-This project is meant to express API usage, as well as proper documentation and error management.
 
+Welcome to my Machine Translation Demo website.
 
+This project is meant to express API usage, as well as error management via console updates.
 
-This project only translates into X, with no intentions of multiple languages.
+The project only translates into Spanish, with little intentions to make it multiple.
 
-EXPLAIN HOW IT WORKS
+How to work it:
+
+1) Type a message in the input field, or press the left file icon to import a .txt file.
+
+2) When ready, hit the translate button.
+
+3.a) If you type a message, it will result in an output field, where the text is on screen
+
+3.b) If you import a .txt file, there is a downloaded icon which will appear.
+
+4) Clear console, and run again!
+
+How it works:
+
+1) The frontend website, ran on TypeScript, is connected to a python script, which translates via a Hugging Face Transformer.
+
+2) When you hit "Translate", It sends an API request to the python script, and translates the message
+
+3) The translated text saves into a separate file, or output field, depending on your choice.
 
 `
 
@@ -154,6 +208,50 @@ clearButton.textContent = "Clear Console"
 // Clearing Console
 clearButton.addEventListener("click", () => {
     consoleBox.innerHTML = ""
+})
+
+// File Selection Logic
+let fileInputText: string | null = null
+
+// When left icon is clicked, trigger file input
+fileInputIcon.addEventListener("click", () => {
+    hiddenFileInput.click()
+})
+
+// Read File Content
+hiddenFileInput.addEventListener("change", async (event: any) => {
+    const file = event.target.files[0]
+    if (!file)return
+
+    const text = await file.text()
+    fileInputText = text
+    logToConsole(`File Loaded: ${file.name}`)
+})
+
+// Download translation
+fileDownloadIcon.addEventListener("click", () => {
+    if (!lastTranslatedText) {
+        logToConsole("No translated text available to download")
+        return
+    } 
+
+    const blob = new Blob([lastTranslatedText], { type: "text/plain" })
+    const url = URL.createObjectURL(blob)
+
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "translation.txt"
+    a.click()
+    URL.revokeObjectURL(url)
+
+    logToConsole("Translation downloaded as translation.txt")
+
+    // Clearing input file after download - otherwise it overrides input text field
+    fileInputText = null
+    hiddenFileInput.value = ""
+    fileDownloadIcon.style.display = "none"
+
+    logToConsole("Resetting input file after download")
 })
 
 // Console Log Function
@@ -187,9 +285,9 @@ clearInput.addEventListener("click", () => {
     outputBox.classList.add("hidden")
 })
 
-// Translate Button Press
+// Translate Button Press - Main loop
 translateButton.addEventListener("click", async () => {
-    const value = inputBox.value.trim()
+    const value = fileInputText ?? inputBox.value.trim() // Use File input if it exists first.
 
     // Prevent empty input
     if (!value) {
@@ -220,10 +318,16 @@ translateButton.addEventListener("click", async () => {
 inputWrapper.appendChild(inputBox)
 inputWrapper.appendChild(clearInput)
 
+// Assembling Translate layer
+translateWrapper.appendChild(fileInputIcon)
+translateWrapper.appendChild(translateButton)
+translateWrapper.appendChild(fileDownloadIcon)
+
 // Assembling layout of main loop
 container.appendChild(title)
 container.appendChild(inputWrapper)
-container.appendChild(translateButton)
+container.appendChild(translateWrapper)
+container.appendChild(hiddenFileInput)
 container.appendChild(outputBox)
 container.appendChild(consoleTitle)
 container.appendChild(consoleBox)

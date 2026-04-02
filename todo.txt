@@ -1,5 +1,1 @@
-1) Allow txt files to be inputs and outputs, overriding if there is text in the input field, and only output regarding if its a txt file.
-
-2) Allow Differenet languages
-
-3) Host both things - Python on Render and TS on Github Pages.
+1) Host both things - Python on Render and TS on Github Pages.
