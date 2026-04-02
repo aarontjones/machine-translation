@@ -8,6 +8,7 @@
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "ES6",
+    "moduleResolution": "bundler",
     "target": "ES6",
     "types": [],
     // For nodejs:

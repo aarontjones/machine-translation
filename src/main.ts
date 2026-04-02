@@ -1,5 +1,27 @@
-declare const tsParticles: any;
+declare const tsParticles: any // Particles
+declare const io: any // Socket Io client
 
+// Socket Stuff
+const socket = io("http://127.0.0.1:5000")
+
+// Receive logs realtime
+socket.on("log", (message: string) => {
+    logToConsole(message)
+})
+
+// Receive Final Result
+socket.on("done", (data: any) => {
+    if (data.translated) {
+        outputBox.textContent = data.translated
+        outputBox.classList.remove("hidden")
+        logToConsole(`Translated message: ${data.translated}`)
+    } else {
+        outputBox.textContent = ""
+        outputBox.classList.add("hidden")
+    }
+})
+
+// Creating app
 const app = document.getElementById("app")
 if (!app) throw new Error("App Container Not Found")
 
@@ -61,10 +83,19 @@ const title = document.createElement("h1")
 title.className = "title"
 title.innerText = "Machine Translation (LANGUAGE)"
 
+// Input Wrapper
+const inputWrapper= document.createElement("div")
+inputWrapper.className = "input-wrapper"
+
 // Input Box
 const inputBox = document.createElement("input")
 inputBox.className = "input-box"
 inputBox.placeholder = "Enter Here..."
+
+// Clear Input Button
+const clearInput = document.createElement("button")
+clearInput.className = "clear-input"
+clearInput.textContent = "X"
 
 // Button
 const translateButton = document.createElement("button")
@@ -75,6 +106,9 @@ translateButton.textContent = "Translate"
 const outputBox = document.createElement("div")
 outputBox.className = "output-box"
 outputBox.textContent = ""
+
+// Auto hide output box, when its empty
+outputBox.classList.add("hidden")
 
 // Console Title
 const consoleTitle = document.createElement("h2")
@@ -146,7 +180,14 @@ function updateLogNumbers() {
     }
 }
 
-// Button Press
+// Clear Button Press
+clearInput.addEventListener("click", () => {
+    inputBox.value = ""
+    outputBox.textContent = ""
+    outputBox.classList.add("hidden")
+})
+
+// Translate Button Press
 translateButton.addEventListener("click", async () => {
     const value = inputBox.value.trim()
 
@@ -154,39 +195,34 @@ translateButton.addEventListener("click", async () => {
     if (!value) {
         logToConsole("Please enter text in the input box.")
         outputBox.textContent = ""
+        outputBox.classList.add("hidden")
         return
     }
 
     // Update Output Box
     try {
+        // Clear previous output
+        outputBox.textContent = ""
+        outputBox.classList.add("hidden")
+
         logToConsole("Running Translation Script")
-        const response = await fetch("http://127.0.0.1:5000/translate", { // Temporary localhost to make sure connections work
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ text: value })
-        })
-        const data = await response.json()
-
-        outputBox.textContent = data.translated
-
-        // Log backend messages
-        if (data.logs) {
-            data.logs.forEach((log: string) => logToConsole(log))
-        }
-
-        logToConsole(`Translated Message: ${data.translated}`)
+        
+        socket.emit("translate", { text: value })
 
     } catch (error) {
+        outputBox.classList.add("hidden") // Another fallback on error
         logToConsole("Error Connecting to Python Backend")
         console.error(error)
     }
 })
 
+// Assembling input layer
+inputWrapper.appendChild(inputBox)
+inputWrapper.appendChild(clearInput)
+
 // Assembling layout of main loop
 container.appendChild(title)
-container.appendChild(inputBox)
+container.appendChild(inputWrapper)
 container.appendChild(translateButton)
 container.appendChild(outputBox)
 container.appendChild(consoleTitle)

@@ -1,7 +1,5 @@
-1) Add a clear field button to input text, which clears the input field and sets the output field back to empty.
+1) Allow txt files to be inputs and outputs, overriding if there is text in the input field, and only output regarding if its a txt file.
 
-2) Use Websockets to get realtime translation information
+2) Allow Differenet languages
 
-3) Allow txt files to be inputs and outputs, overriding if there is text in the input field, and only output regarding if its a txt file.
-
-4) Allow Differenet languages
+3) Host both things - Python on Render and TS on Github Pages.

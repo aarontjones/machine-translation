@@ -62,11 +62,16 @@ body {
 /* Input */
 .input-box {
     color: black;
-    width: 100%;
+    width: 90%;
     padding: 8px;
     border-radius: 8px;
     border: 1px solid rgb(128, 128, 128);
     box-shadow: 0 4px 20px rgba(0,0,0,0.15)
+}
+
+.input-wrapper {
+    display: flex;
+    position: relative;
 }
 
 /* Buttons */
@@ -91,6 +96,23 @@ body {
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15)
+}
+
+.clear-input {
+    position: absolute;
+    top: 50%;
+    right: 1%;
+    transform: translateY(-50%);
+    
+    width: 8%;
+    height: 100%;
+    
+    border: 1px solid rgb(128, 128, 128);
+    border-radius: 6px;
+    background-color: white;
+    cursor: pointer;
+
+    font-size: 12px;
 }
 
 /* Output */
@@ -146,4 +168,8 @@ body {
 
 .about-continer {
     max-width: 50%;
+}
+
+.hidden {
+    display: none;
 }
