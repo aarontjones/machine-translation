@@ -2,7 +2,7 @@ declare const tsParticles: any // Particles
 declare const io: any // Socket Io client
 
 // Socket Stuff
-const socket = io("http://127.0.0.1:5000")
+const socket = io("https://machine-translation-9ygl.onrender.com")
 
 // Receive logs realtime
 socket.on("log", (message: string) => {
