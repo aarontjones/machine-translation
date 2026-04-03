@@ -1,0 +1,6 @@
+eventlent
+torch
+transformers
+flask_cors
+flask
+flask_socketio
