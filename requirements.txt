@@ -1,4 +1,5 @@
-eventlent
+
+eventlet
 torch
 transformers
 flask_cors
