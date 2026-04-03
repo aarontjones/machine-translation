@@ -4,11 +4,14 @@ from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from transformers import pipeline, AutoModelForSeq2SeqLM, AutoTokenizer
 import time
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 socketio = SocketIO(app, cors_allowed_origins="*") # Creating websocket
+
+os.environ["HF_HOME"] = "/opt/render/projects/src/hf-cache" # Fixing stuff for Render hosting
 
 # Loading pipeline once
 model_name = "Helsinki-NLP/opus-mt-en-es"

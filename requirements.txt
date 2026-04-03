@@ -5,3 +5,5 @@ transformers
 flask_cors
 flask
 flask_socketio
+huggingface_hub
+sentencepiece
