@@ -174,30 +174,19 @@ about.innerText = `
 
 Welcome to my Machine Translation Demo website.
 
-This project is meant to express API usage, as well as error management via console updates.
+This project is meant to express API usage, error management and logging via a built in console and production deployment.
 
-The project only translates into Spanish, with little intentions to make it multiple.
+The project only translates into Spanish, with no intention of other languages.
 
-How to work it:
+---Workflow:
 
-1) Type a message in the input field, or press the left file icon to import a .txt file.
+1) The frontend website, which you're seeing, is connected to a Python script, hosted on Render.
 
-2) When ready, hit the translate button.
+2) When you translate, it sends a request via HTTPS to the script.
 
-3.a) If you type a message, it will result in an output field, where the text is on screen
+3) The Python script sends an API request to a Hugging Face Transformer, which translates the message into Spanish.
 
-3.b) If you import a .txt file, there is a downloaded icon which will appear.
-
-4) Clear console, and run again!
-
-How it works:
-
-1) The frontend website, ran on TypeScript, is connected to a python script, which translates via a Hugging Face Transformer.
-
-2) When you hit "Translate", It sends an API request to the python script, and translates the message
-
-3) The translated text saves into a separate file, or output field, depending on your choice.
-
+4) The translated messages returns to the webpage, in either the output field or the downloadable file.
 `
 
 // Console Clear Button
