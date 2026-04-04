@@ -2,7 +2,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
-from transformers import pipeline, AutoModelForSeq2SeqLM, AutoTokenizer
 import time
 import os
 
@@ -12,6 +11,12 @@ CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*") # Creating websocket
 
 os.environ["HF_HOME"] = "/opt/render/projects/src/hf-cache" # Fixing stuff for Render hosting
+HF_TOKEN = os.environ.get("HF_TOKEN")
+API_URL = "https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-es" # Using this, as directly using model causes Render to crash as its above 512MB
+
+headers = {
+    "Authorization": f"Bearer {HF_TOKEN}"
+}
 
 # Loading pipeline once
 model_name = "Helsinki-NLP/opus-mt-en-es"
@@ -39,46 +44,34 @@ def translate(data):
     charCount = len(text)
     log(f"Input Length: {charCount} characters")
 
-    # -----Translation Section-----
-    # Tokenization and Timing
-    startTokenize = time.time()
-    inputs = tokenizer(text, return_tensors="pt", truncation=True)
-    endTokenize = time.time()
-    inputTokens = inputs["input_ids"].shape[1]
-
-    log(f"Tokenization complete ({inputTokens} tokens)")
-    log(f"Tokenization time: {round(endTokenize - startTokenize, 4)}s")
-
-    # socketio.sleep(5) - Used to check if websockets worked properly, which they do.
-
     # Generate Translation and Timing
     startInference = time.time()
-    outputs = model.generate(**inputs, max_length=1024)
+
+    response = requests.post(
+        API_URL,
+        headers=headers,
+        json={"inputs": text}
+    )
+
     endInference = time.time()
 
+    if response.status_code != 200:
+        log(f"Error: {response.text}")
+        emit("done", {"translated": ""})
+        return
+
+    result = response.json()[0]["translation_text"]
+
     log(f"Inference Time: {round(endInference - startInference, 4)}s")
-
-    # Decode Translation and Timing
-    startDecode = time.time()
-    result = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    endDecode = time.time()
-    outputTokens = outputs[0].shape[0]
-
-    log(f"Decoding Time: {round(endDecode - startDecode, 4)}s")
-    log(f"Output Tokens: {outputTokens}")
 
     # Total Time
     endTime = time.time()
     duration = round(endTime - startTime, 4)
     log(f"Translation took {duration} seconds")
 
-    # Throughput
-    if duration > 0:
-        throughput = round(outputTokens / duration, 2)
-        log(f"Throughput: {throughput} tokens/sec")
-
     # Final Result
     emit("done", {"translated": result})
 
 if __name__ == "__main__":
-    socketio.run(app, host="0.0.0.0", port=1000)
+    port = int(os.environ.get("PORT", 10000))
+    socketio.run(app, host="0.0.0.0", port=port)
