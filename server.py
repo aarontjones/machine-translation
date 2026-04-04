@@ -2,12 +2,9 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
-from dotenv import load_dotenv
 import time
 import requests
 import os
-
-load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
@@ -40,7 +37,9 @@ def translate(data):
 
     # If HF_TOKEN not set
     if not HF_TOKEN:
-        print("HF_TOKEN is missing!")
+        emit("log", "HF_TOKEN is MISSING")
+    else:
+        emit("log", f"HF_TOKEN LENGTH: {len(HF_TOKEN)}")
 
     # Input Stats
     charCount = len(text)

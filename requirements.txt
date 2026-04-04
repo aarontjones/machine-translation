@@ -4,4 +4,3 @@ flask
 flask_socketio
 huggingface_hub
 requests
-python-dotenv
