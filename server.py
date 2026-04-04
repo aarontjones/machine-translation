@@ -3,6 +3,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 import time
+import requests
 import os
 
 app = Flask(__name__)
@@ -17,12 +18,6 @@ API_URL = "https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-e
 headers = {
     "Authorization": f"Bearer {HF_TOKEN}"
 }
-
-# Loading pipeline once
-model_name = "Helsinki-NLP/opus-mt-en-es"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-
 
 # Translation
 @socketio.on("translate")
