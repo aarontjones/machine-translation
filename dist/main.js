@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 // Socket Stuff
-const socket = io("http://127.0.0.1:5000");
+const socket = io("https://machine-translation-9ygl.onrender.com");
 // Receive logs realtime
 socket.on("log", (message) => {
     logToConsole(message);
