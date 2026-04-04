@@ -13,7 +13,7 @@ socketio = SocketIO(app, cors_allowed_origins="*") # Creating websocket
 
 os.environ["HF_HOME"] = "/opt/render/projects/src/hf-cache" # Fixing stuff for Render hosting
 HF_TOKEN = os.environ.get("HF_TOKEN")
-API_URL = "https://api-inference.huggingface.co/models/Helsinki-NLP/opus-mt-en-es" # Using this, as directly using model causes Render to crash as its above 512MB
+API_URL = "https://router.huggingface.co/models/Helsinki-NLP/opus-mt-en-es" # Using this, as directly using model causes Render to crash as its above 512MB
 
 headers = {
     "Authorization": f"Bearer {HF_TOKEN}"
