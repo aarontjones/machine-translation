@@ -152,6 +152,9 @@ This project is meant to express API usage, error management and logging via a b
 
 The project only translates into Spanish, with no intention of other languages.
 
+Warning: Sometimes when the app hasnt been run for a while, it can take long to translate a message.
+The reason why is that I am using Render's Free option, which can take up to 50 seconds to warm up.
+
 ---Workflow:
 
 1) The frontend website, which you're seeing, is connected to a Python script, hosted on Render.
